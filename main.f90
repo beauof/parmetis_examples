@@ -8,6 +8,7 @@
 program test
 
     use mpi
+    use iso_c_binding
     implicit none
 
     integer, allocatable        :: elmdist(:), eptr(:), eind(:)
@@ -27,7 +28,8 @@ program test
     call MPI_COMM_SIZE(MPI_COMM_WORLD, nprocs, ierr)
     call MPI_COMM_RANK(MPI_COMM_WORLD, procid, ierr)
 
-    write(*,*) "nprocs = ",nprocs,", procid = ",procid,", MPI_COMM_WORLD = ",MPI_COMM_WORLD
+    write(*,*) c_int,huge(c_int)
+    write(*,*) "nprocs = ",nprocs,"| procid = ",procid,"| MPI_COMM_WORLD = ",MPI_COMM_WORLD
 
     weight_flag                 = 0
     num_flag                    = 0
@@ -74,8 +76,8 @@ program test
     call ParMETIS_V3_PartMeshKway(elmdist, eptr, eind, elmwgt, weight_flag, num_flag, &
     & ncon, number_of_common_nodes, number_parts, tp_weights, ub_vec, options, edgecut, partition, MPI_COMM_WORLD)
 
-    write(*,*) "procid = ",procid,"edgecut = ",edgecut
-    write(*,*) "procid = ",procid,"partition = ",partition
+    write(*,*) "procid = ",procid,"| edgecut = ",edgecut
+    write(*,*) "procid = ",procid,"| partition = ",partition
 
     deallocate(elmdist, eptr, eind, tp_weights)
     
